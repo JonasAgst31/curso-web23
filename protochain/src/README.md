@@ -1,6 +1,8 @@
-# instalando o typescript no node
+# instalando pacotes de desenvolvimento no node
 
 npm i -D typescript
+npm i -D ts-node
+npm i -D nodemon
 
 # inicia o typescript no projeto
 

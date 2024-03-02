@@ -5,12 +5,15 @@
   "main": "index.js",
   "scripts": {
     "compile": "npx tsc",
+    "dev": "npx nodemon --watch ./src/ --exec npx ts-node ./src/blockchain.ts -e ts",
     "start": "node ./dist/blockchain.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }
 }
