@@ -1,9 +1,12 @@
-const x = 0;
-console.log(x);
+import Block from './block';
 
-let y : number;
-let nome : string;
-let dataNascimento : Date;
+const block1 = new Block(2, "abc");
+
+// block1.hash = "abc";
+// block1.index = 2;
+
+console.log(block1);
+console.log(block1.isValid());
 
 
 function somar(n1 : number, n2 : number) : number {
