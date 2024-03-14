@@ -3,10 +3,15 @@
 npm i -D typescript
 npm i -D ts-node
 npm i -D nodemon
+npm i -D jest ts-jest @types/jest
 
 # inicia o typescript no projeto
 
 npx tsc --init
+
+# inicia o jest
+
+npx jest --init
 
 # rodando o transducer 
 
