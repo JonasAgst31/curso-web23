@@ -4,6 +4,11 @@ npm i -D typescript
 npm i -D ts-node
 npm i -D nodemon
 npm i -D jest ts-jest @types/jest
+npm i -D @types/crypto-js
+
+# instalando dependencias
+
+npm i crypto-js
 
 # inicia o typescript no projeto
 
