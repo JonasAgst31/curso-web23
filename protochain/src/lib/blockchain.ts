@@ -1,16 +1,15 @@
 import Block from './block';
 
-const block1 = new Block(2, "abc");
+/**
+ * Blockchain class
+ */
+export default class Blockchain {
+    blocks: Block[];
 
-// block1.hash = "abc";
-// block1.index = 2;
-
-console.log(block1);
-console.log(block1.isValid());
-
-
-function somar(n1 : number, n2 : number) : number {
-    return n1 + n2;
+    /**
+     * Creates a new blockchain
+     */
+    constructor(){
+        this.blocks = [new Block(0, "genesis")];
+    }
 }
-
-console.log(somar(7, 3));
