@@ -4,7 +4,7 @@ import Validation from './validation';
 /**
  * Block class
  */
-export default class Block{
+export default class Block {
     index: number;
     timestamp: number;
     hash: string;
@@ -18,7 +18,7 @@ export default class Block{
      * @param previousHash The previous block hash
      * @param data The block data
      */
-    constructor(index: number, previousHash: string, data: string){
+    constructor(index: number, previousHash: string, data: string) {
         this.index = index;
         this.timestamp = Date.now();
         this.previousHash = previousHash;
@@ -35,7 +35,7 @@ export default class Block{
      * Validates the block
      * @returns Returns if the block is valid
      */
-    isValid(previousHash : string, previousIndex: number) : Validation {
+    isValid(previousHash: string, previousIndex: number): Validation {
         if (this.index !== previousIndex + 1) return new Validation(false, "Invalid index.");
         if (this.hash !== this.getHash()) return new Validation(false, "Invalid hash.");
         if (this.previousHash !== previousHash) return new Validation(false, "Invalid previous hash.");
