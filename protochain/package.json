@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "check:types": "tsc --noEmit",
     "compile": "npx tsc",
     "dev": "npx nodemon --watch ./src/ --exec npx ts-node ./src/lib/blockchain.ts -e ts",
     "start": "node ./dist/blockchain.js",
@@ -15,7 +16,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/crypto-js": "^4.2.2",
-    "@types/express": "^5.0.3",
+    "@types/express": "^4.17.14",
     "@types/jest": "^29.5.12",
     "@types/morgan": "^1.9.10",
     "jest": "^29.7.0",
