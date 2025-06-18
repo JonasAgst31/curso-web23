@@ -16,13 +16,21 @@ describe("Blockchain tests", () => {
 
     test('Should be valid (two blocks)', () => {
         const blockchain = new Blockchain();
-        blockchain.addBlock(new Block(1, blockchain.blocks[0].hash, "Block 2"));
+        blockchain.addBlock(new Block({
+            index: 1,
+            previousHash: blockchain.blocks[0].hash,
+            data: "Block 2"
+        } as Block));
         expect(blockchain.isValid().success).toBeTruthy;
     })
 
     test('Should NOT be valid', () => {
         const blockchain = new Blockchain();
-        blockchain.addBlock(new Block(1, blockchain.blocks[0].hash, "Block 2"));
+        blockchain.addBlock(new Block({
+            index: 1,
+            previousHash: blockchain.blocks[0].hash,
+            data: "Block 2"
+        } as Block));
         blockchain.blocks[1].data = "a transfere 2 para b";
         expect(blockchain.isValid().success).toBeFalsy;
     })
@@ -35,13 +43,21 @@ describe("Blockchain tests", () => {
 
     test('Should add block', () => {
         const blockchain = new Blockchain();
-        const result = blockchain.addBlock(new Block(1, blockchain.blocks[0].hash, "Block 2"));
+        const result = blockchain.addBlock(new Block({
+            index: 1,
+            previousHash: blockchain.blocks[0].hash,
+            data: "Block 2"
+        } as Block));
         expect(result.success).toBeTruthy;
     })
 
     test('Should NOT add block', () => {
         const blockchain = new Blockchain();
-        const block = new Block(-1, blockchain.blocks[0].hash, "Block 2")
+        const block = new Block({
+            index: -1,
+            previousHash: blockchain.blocks[0].hash,
+            data: "Block 2"
+        } as Block);
         const result = blockchain.addBlock(block);
         expect(result.success).toBeFalsy;
     })
