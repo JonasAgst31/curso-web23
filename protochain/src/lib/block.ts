@@ -1,5 +1,6 @@
 import sha256 from 'crypto-js/sha256';
 import Validation from './validation';
+import BlockInfo from './blockInfo';
 
 /**
  * Block class
@@ -67,5 +68,13 @@ export default class Block {
             return new Validation(false, "Invalid hash.");
 
         return new Validation();
+    }
+
+    static fromBlockInfo(blockInfo: BlockInfo): Block {
+        const block = new Block();
+        block.index = blockInfo.index;
+        block.previousHash = blockInfo.previousHash;
+        block.data = blockInfo.data;
+        return block;
     }
 }
