@@ -1,5 +1,6 @@
 import Block from './block';
 import Validation from '../validation';
+import BlockInfo from '../blockInfo';
 
 /**
  * Mocked blockchain class
@@ -28,7 +29,7 @@ export default class Blockchain {
 
     addBlock(block: Block): Validation {
         if (block.index < 0) return new Validation(false, "Invalid mock block.");
-        
+
         this.blocks.push(block);
         this.nextIndex++;
 
@@ -45,5 +46,20 @@ export default class Blockchain {
      */
     isValid(): Validation {
         return new Validation();
+    }
+
+    getFeePerTx(): number {
+        return 1;
+    }
+
+    getNextBlock(): BlockInfo {
+        return {
+            data: new Date().toString(),
+            difficulty: 0,
+            previousHash: this.getLastBlock().hash,
+            index: 1,
+            feePerTx: this.getFeePerTx(),
+            maxDifficulty: 62
+        } as BlockInfo;
     }
 }

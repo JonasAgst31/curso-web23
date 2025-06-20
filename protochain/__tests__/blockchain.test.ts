@@ -1,4 +1,4 @@
-import { describe, test, expect } from '@jest/globals';
+import { describe, test, expect, jest } from '@jest/globals';
 import Blockchain from '../src/lib/blockchain';
 import Block from '../src/lib/block';
 
@@ -35,7 +35,7 @@ describe("Blockchain tests", () => {
         } as Block));
 
         blockchain.blocks[1].index = -1;
-        
+
         expect(blockchain.isValid().success).toBeFalsy;
     })
 
