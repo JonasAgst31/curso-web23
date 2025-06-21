@@ -45,7 +45,6 @@ describe("Block tests", () => {
         const block = new Block();
         const valid = block.isValid(genesis.hash, genesis.index, exampleDifficulty);
         expect(valid.success).toBeFalsy();
-        console.log(valid)
     })
 
     test('Should NOT be valid (previous hash)', () => {
