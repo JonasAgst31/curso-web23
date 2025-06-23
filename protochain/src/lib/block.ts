@@ -26,7 +26,7 @@ export default class Block {
         this.previousHash = block?.previousHash || "";
 
         this.transactions = block?.transactions
-            ? block?.transactions.map(tx => new Transaction(tx))
+            ? block.transactions.map(tx => new Transaction(tx))
             : [] as Transaction[];
 
         this.nonce = block?.nonce || 0;

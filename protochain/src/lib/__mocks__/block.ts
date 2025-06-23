@@ -1,3 +1,4 @@
+import Transaction from '../transaction';
 import Validation from '../validation';
 
 /**
@@ -8,7 +9,7 @@ export default class Block {
     timestamp: number;
     hash: string;
     previousHash: string;
-    data: string;
+    transactions: Transaction[];
 
     /**
      * Creates a new mock block
@@ -18,7 +19,7 @@ export default class Block {
         this.index = block?.index || 0;
         this.timestamp = block?.timestamp || Date.now();
         this.previousHash = block?.previousHash || "";
-        this.data = block?.data || "";
+        this.transactions = block?.transactions || [] as Transaction[];
         this.hash = block?.hash || this.getHash();
 
     }
