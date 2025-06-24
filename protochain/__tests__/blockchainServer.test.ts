@@ -97,4 +97,24 @@ describe('BlockchainServer Tests', () => {
 
         expect(response.status).toEqual(201);
     })
+
+    test('POST /transactions - Should NOT add tx (invalid)', async () => {
+        const tx = new Transaction({
+            data: ""
+        } as Transaction);
+
+        const response = await request(app)
+            .post('/transactions/')
+            .send(tx);
+
+        expect(response.status).toEqual(400);
+    })
+
+    test('POST /transactions - Should NOT add tx (empty)', async () => {
+        const response = await request(app)
+            .post('/transactions/')
+            .send({});
+
+        expect(response.status).toEqual(422);
+    })
 })
