@@ -22,6 +22,7 @@ export default class Blockchain {
      * Creates a new blockchain
      */
     constructor() {
+        this.mempool = [];
         this.blocks = [new Block({
             index: this.nextIndex, // nextindex é chamado de altura do bloco
             previousHash: "",
@@ -30,7 +31,6 @@ export default class Blockchain {
                 data: new Date().toString()
             } as Transaction)]
         } as Block)];
-        this.mempool = [];
         this.nextIndex++;
     }
 
@@ -63,15 +63,15 @@ export default class Blockchain {
         const validation = block.isValid(lastBlock.hash, lastBlock.index, this.getDifficulty());
         if (!validation.success) return new Validation(false, `Invalid block: ${validation.message}`);
 
-        this.blocks.push(block);
-        this.nextIndex++;
-
         const txs = block.transactions.filter(tx => tx.type !== TransactionType.FEE).map(tx => tx.hash);
         const newMempool = this.mempool.filter(tx => !txs.includes(tx.hash));
         if (newMempool.length + txs.length !== this.mempool.length)
             return new Validation(false, "Invalid tx in block: mempool.");
 
         this.mempool = newMempool;
+
+        this.blocks.push(block);
+        this.nextIndex++;
 
         return new Validation(true, block.hash);
     }
