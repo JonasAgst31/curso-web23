@@ -1,17 +1,14 @@
 import { describe, test, expect, beforeAll, jest } from '@jest/globals';
-import Block from '../src/lib/block';
-import BlockInfo from '../src/lib/blockInfo';
-import Transaction from '../src/lib/transaction';
-import TransactionType from '../src/lib/transactionType';
 import TransactionInput from '../src/lib/transactionInput';
 import Wallet from '../src/lib/wallet';
 
 describe("TransactionInput tests", () => {
 
-    let alice : Wallet;
+    let alice : Wallet, bob : Wallet;
 
     beforeAll(() => {
         alice = new Wallet();
+        bob = new Wallet();
     })
 
     test('Should be valid', () => {
@@ -23,6 +20,45 @@ describe("TransactionInput tests", () => {
 
         const valid = txInput.isValid();
         expect(valid.success).toBeTruthy();
+    })
+
+    test('Should NOT be valid (defaults)', () => {
+        const txInput = new TransactionInput();
+
+        const valid = txInput.isValid();
+        expect(valid.success).toBeFalsy();
+    })
+
+    test('Should NOT be valid (missing signature)', () => {
+        const txInput = new TransactionInput({
+            amount: 10,
+            fromAddress: alice.publicKey,
+        } as TransactionInput)
+
+        const valid = txInput.isValid();
+        expect(valid.success).toBeFalsy();
+    })
+
+    test('Should NOT be valid (negative amount)', () => {
+        const txInput = new TransactionInput({
+            amount: -10,
+            fromAddress: alice.publicKey,
+        } as TransactionInput)
+        txInput.sign(alice.privateKey);
+
+        const valid = txInput.isValid();
+        expect(valid.success).toBeFalsy();
+    })
+
+    test('Should NOT be valid (invalid signature)', () => {
+        const txInput = new TransactionInput({
+            amount: 10,
+            fromAddress: alice.publicKey,
+        } as TransactionInput)
+        txInput.sign(bob.privateKey);
+
+        const valid = txInput.isValid();
+        expect(valid.success).toBeFalsy();
     })
     
 })

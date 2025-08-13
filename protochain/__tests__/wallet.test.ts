@@ -1,9 +1,4 @@
 import { describe, test, expect, beforeAll, jest } from '@jest/globals';
-import Block from '../src/lib/block';
-import BlockInfo from '../src/lib/blockInfo';
-import Transaction from '../src/lib/transaction';
-import TransactionType from '../src/lib/transactionType';
-import TransactionInput from '../src/lib/transactionInput';
 import Wallet from '../src/lib/wallet';
 
 describe("Wallet tests", () => {
@@ -16,6 +11,12 @@ describe("Wallet tests", () => {
         })
 
     test('Should be valid', () => {
+        const wallet = new Wallet();
+        expect(wallet.privateKey).toBeTruthy();
+        expect(wallet.publicKey).toBeTruthy();
+    })
+
+    test('Should NOT be valid (defaults)', () => {
         const wallet = new Wallet();
         expect(wallet.privateKey).toBeTruthy();
         expect(wallet.publicKey).toBeTruthy();

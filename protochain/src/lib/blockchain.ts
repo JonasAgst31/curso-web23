@@ -4,6 +4,7 @@ import BlockInfo from './blockInfo';
 import Transaction from './transaction';
 import TransactionType from './transactionType';
 import TransactionSearch from './transactionSearch';
+import TransactionInput from './transactionInput';
 
 /**
  * Blockchain class
@@ -28,7 +29,7 @@ export default class Blockchain {
             previousHash: "",
             transactions: [new Transaction({
                 type: TransactionType.FEE,
-                data: new Date().toString()
+                txInput: new TransactionInput()
             } as Transaction)]
         } as Block)];
         this.nextIndex++;
