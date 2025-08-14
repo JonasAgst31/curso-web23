@@ -2,7 +2,9 @@ import dotenv from "dotenv";
 import axios from "axios";
 import readline from "readline";
 import Wallet from "../lib/wallet";
-import { send } from "process";
+import Transaction from "../lib/transaction";
+import TransactionType from "../lib/transactionType";
+import TransactionInput from "../lib/transactionInput";
 
 dotenv.config();
 
@@ -98,7 +100,47 @@ function sendTx() {
         return preMenu();
     }
 
-    //TODO: SEND TX via API
+    console.log(`Your wallet is ${myWalletPub}`);
+    rl.question("Send tx to wallet: ", (toWallet) => {
+        if (toWallet.length < 60) {
+            console.log("Invalid wallet.");
+            return preMenu();
+        }
+
+        rl.question("Amount: ", async (amountStr) => {
+            const amount = parseInt(amountStr);
+            if (!amount) {
+                console.log("Invalid amount.");
+                preMenu();
+            }
+
+            //TODO: balance validation
+
+            const tx = new Transaction();
+            tx.timestamp = Date.now();
+            tx.to = toWallet;
+            tx.type = TransactionType.REGULAR;
+            tx.txInput = new TransactionInput({
+                amount,
+                fromAddress: myWalletPub
+            } as TransactionInput);
+
+            tx.txInput.sign(myWalletPriv);
+            tx.hash = tx.getHash();
+
+            try {
+                const txResponse = await axios.post(`${BLOCKCHAIN_SERVER}transactions/`, tx);
+                console.log("Transation accepted. Waiting the miners...");
+                console.log(txResponse.data.hash);
+            }
+            catch (err: any) {
+                console.error(err.response ? err.response.data : err.message);
+            }
+
+            return preMenu();
+        })
+    })
+
     preMenu();
 }
 
