@@ -31,12 +31,14 @@ function menu() {
         console.log("2 - Recover Wallet");
         console.log("3 - Balance");
         console.log("4 - Send tx");
+        console.log("5 - Search tx");
         rl.question("Choose your option: ", (answer) => {
             switch (answer) {
                 case "1": createWallet(); break;
                 case "2": recoverWallet(); break;
                 case "3": getBalance(); break;
                 case "4": sendTx(); break;
+                case "5": searchTx(); break;
                 default: {
                     console.log("Invalid option!");
                     menu();
@@ -142,6 +144,15 @@ function sendTx() {
     })
 
     preMenu();
+}
+
+function searchTx() {
+    console.clear();
+    rl.question("Your tx hash: ", async (hash) => {
+        const response = await axios.get(`${BLOCKCHAIN_SERVER}transactions/${hash}`);
+        console.log(response.data);
+        return preMenu();
+    })
 }
 
 menu();
