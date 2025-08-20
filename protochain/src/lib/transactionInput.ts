@@ -48,7 +48,7 @@ export default class TransactionInput {
      * @returns a validation result object
      */
     isValid(): Validation {
-        if (!this.previousTx && !this.signature)
+        if (!this.previousTx || !this.signature)
             return new Validation(false, "Signature and previous TX are required.");
 
         if (this.amount < 1)
