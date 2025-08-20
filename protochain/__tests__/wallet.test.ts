@@ -4,11 +4,11 @@ import Wallet from '../src/lib/wallet';
 describe("Wallet tests", () => {
 
     const exampleWif = "5HueCGU8rMjxEXxiPuD5BDku4MkFqeZyd4dZ1jvhTVqvbTLvyTJ";
-    let alice : Wallet;
+    let alice: Wallet;
 
     beforeAll(() => {
-            alice = new Wallet();
-        })
+        alice = new Wallet();
+    })
 
     test('Should be valid', () => {
         const wallet = new Wallet();

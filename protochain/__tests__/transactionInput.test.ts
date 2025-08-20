@@ -4,7 +4,7 @@ import Wallet from '../src/lib/wallet';
 
 describe("TransactionInput tests", () => {
 
-    let alice : Wallet, bob : Wallet;
+    let alice: Wallet, bob: Wallet;
 
     beforeAll(() => {
         alice = new Wallet();
@@ -15,6 +15,7 @@ describe("TransactionInput tests", () => {
         const txInput = new TransactionInput({
             amount: 10,
             fromAddress: alice.publicKey,
+            previousTx: "abc"
         } as TransactionInput)
         txInput.sign(alice.privateKey);
 
@@ -60,5 +61,5 @@ describe("TransactionInput tests", () => {
         const valid = txInput.isValid();
         expect(valid.success).toBeFalsy();
     })
-    
+
 })
