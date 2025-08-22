@@ -83,7 +83,7 @@ function recoverWallet() {
     })
 }
 
-function getBalance() {
+async function getBalance() {
     console.clear();
 
     if (!myWalletPub) {
@@ -91,7 +91,9 @@ function getBalance() {
         return preMenu();
     }
 
-    //TODO: get balance via API
+    const { data } = await axios.get(`${BLOCKCHAIN_SERVER}wallets/${myWalletPub}`);
+    console.log("Your balance is: " + data.balance);
+
     preMenu();
 }
 
@@ -127,23 +129,33 @@ function sendTx() {
                 return preMenu();
             }
 
-            const tx = new Transaction();
-            tx.timestamp = Date.now();
-            tx.txOutputs = [new TransactionOutput({
+            const txInputs = utxo.map(txo => TransactionInput.fromTxo(txo));
+            txInputs.forEach((txi, index, arr) => arr[index].sign(myWalletPriv));
+
+            //Transação de transferência
+            const txOutputs = [] as TransactionOutput[];
+            txOutputs.push(new TransactionOutput({
                 toAddress: toWallet,
                 amount
-            } as TransactionOutput)];
+            } as TransactionOutput));
 
-            tx.type = TransactionType.REGULAR;
-            tx.txInputs = [new TransactionInput({
-                amount,
-                fromAddress: myWalletPub,
-                previousTx: utxo[0].tx
-            } as TransactionInput)];
+            //Transação de troco
+            const remainingBalance = balance - amount - fee;
+            txOutputs.push(new TransactionOutput({
+                toAddress: myWalletPub,
+                amount: remainingBalance
+            } as TransactionOutput));
 
-            tx.txInputs[0].sign(myWalletPriv);
+            const tx = new Transaction({
+                txInputs,
+                txOutputs
+            } as Transaction);
+
             tx.hash = tx.getHash();
-            tx.txOutputs[0].tx = tx.hash;
+            tx.txOutputs.forEach((txo, index, arr) => arr[index].tx = tx.hash);
+
+            console.log(tx);
+            console.log("Remaining balance: " + remainingBalance);
 
             try {
                 const txResponse = await axios.post(`${BLOCKCHAIN_SERVER}transactions/`, tx);
