@@ -45,13 +45,16 @@ app.get('/blocks/:indexOrHash', (req: Request, res: Response, next: NextFunction
         block = blockchain.getBlock(req.params.indexOrHash);
 
     if (!block)
-        return res.sendStatus(404);
+        res.sendStatus(404);
     else
-        return res.json(block);
+        res.json(block);
 })
 
 app.post('/blocks', (req: Request, res: Response, next: NextFunction) => {
-    if (req.body.hash === undefined) return res.sendStatus(422);
+    if (req.body.hash === undefined) {
+        res.sendStatus(422);
+        return;
+    }
 
     const block = new Block(req.body as Block);
     const validation = blockchain.addBlock(block);
@@ -62,7 +65,7 @@ app.post('/blocks', (req: Request, res: Response, next: NextFunction) => {
         res.status(400).json(validation);
 })
 
-app.get('/transactions/:hash?', (req: Request, res: Response, next: NextFunction) => {
+app.get('/transactions/{:hash}', (req: Request, res: Response, next: NextFunction) => {
     if (req.params.hash) {
         res.json(blockchain.getTransaction(req.params.hash));
     }
@@ -74,7 +77,10 @@ app.get('/transactions/:hash?', (req: Request, res: Response, next: NextFunction
 })
 
 app.post('/transactions', (req: Request, res: Response, next: NextFunction) => {
-    if (req.body.hash === undefined) return res.sendStatus(422);
+    if (req.body.hash === undefined) {
+        res.sendStatus(422);
+        return;
+    }
 
     const tx = new Transaction(req.body as Transaction);
     const validation = blockchain.addTransaction(tx);
