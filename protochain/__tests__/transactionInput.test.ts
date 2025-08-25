@@ -1,9 +1,11 @@
 import { describe, test, expect, beforeAll, jest } from '@jest/globals';
 import TransactionInput from '../src/lib/transactionInput';
 import Wallet from '../src/lib/wallet';
+import TransactionOutput from '../src/lib/transactionOutput';
 
 describe("TransactionInput tests", () => {
 
+    const exampleTx: string = "2b7e4ca0fe162ae6fa4a25166c59ff706fa94687c1a6c9cd53feaff8171f3c7c";
     let alice: Wallet, bob: Wallet;
 
     beforeAll(() => {
@@ -75,6 +77,19 @@ describe("TransactionInput tests", () => {
 
         const valid = txInput.isValid();
         expect(valid.success).toBeFalsy();
+    })
+
+    test('Should create from TXO', () => {
+        const txi = TransactionInput.fromTxo({
+            amount: 10,
+            toAddress: alice.publicKey,
+            tx: exampleTx
+        } as TransactionOutput);
+        txi.sign(alice.privateKey);
+
+        txi.amount = 11;
+        const result = txi.isValid();
+        expect(result.success).toBeFalsy();
     })
 
 })
